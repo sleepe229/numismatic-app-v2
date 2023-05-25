@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Numismatic</string>
+    <string name="take_picture">Take picture</string>
+    <string name="gallery">Gallery</string>
+    <string name="camera_activity_title">активность камеры</string>
+    <string name="back_main_activity">Back</string>
+</resources>
