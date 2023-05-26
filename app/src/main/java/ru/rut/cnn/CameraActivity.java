@@ -38,7 +38,6 @@ import ru.rut.cnn.databinding.ActivityCameraBinding;
 public class CameraActivity extends AppCompatActivity implements RecognitionListener {
     private ActivityCameraBinding binding;
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
-    private ActivityResultLauncher<PickVisualMediaRequest> pickVisualLauncher;
     private ImageCapture imageCapture;
 
     @Override
@@ -53,19 +52,8 @@ public class CameraActivity extends AppCompatActivity implements RecognitionList
             startActivity(intent);
         });
 
-        registerActivityForPickImage();
 
         openCamera();
-    }
-
-    private void registerActivityForPickImage() {
-        pickVisualLauncher = registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
-            if (uri != null) {
-                Log.d("PhotoPicker", "Selected URI: " + uri);
-            } else {
-                Log.d("PhotoPicker", "No media selected");
-            }
-        });
     }
 
     private void openCamera() {
@@ -90,13 +78,6 @@ public class CameraActivity extends AppCompatActivity implements RecognitionList
         CameraSelector cameraSelector = new CameraSelector.Builder()
                 .requireLensFacing(CameraSelector.LENS_FACING_BACK)
                 .build();
-        ImageAnalyzer analyzer = new ImageAnalyzer(this, (RecognitionListener) this);
-        ImageAnalysis imageAnalysis = new ImageAnalysis.Builder()
-                .setTargetResolution(new Size(150, 150))
-                .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-                .build();
-
-        imageAnalysis.setAnalyzer(ContextCompat.getMainExecutor(this), analyzer);
 
         imageCapture = new ImageCapture.Builder().build();
 
@@ -108,11 +89,12 @@ public class CameraActivity extends AppCompatActivity implements RecognitionList
                 preview.setSurfaceProvider(binding.cameraView.getSurfaceProvider());
 
                 cameraProvider.unbindAll();
-                cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageCapture, imageAnalysis);
+                cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageCapture);
             } catch (ExecutionException | InterruptedException e) {
                 Log.e(TAG, "Error: " + e.getMessage());
             }
-        }, ContextCompat.getMainExecutor(this));
+        },
+                ContextCompat.getMainExecutor(this));
     }
 
     private void takePicture() {
@@ -144,6 +126,7 @@ public class CameraActivity extends AppCompatActivity implements RecognitionList
             }
         });
     }
+
     @Override
     public void onResult(Category category) {
         Log.w(TAG, category.getLabel());

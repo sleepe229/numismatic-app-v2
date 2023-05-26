@@ -41,9 +41,10 @@
         android:layout_height="200dp"
         android:layout_below="@id/toolbar_layout"
         android:layout_centerHorizontal="true"
-        android:layout_marginStart="116dp"
-        android:layout_marginTop="264dp"
+
         android:src="@drawable/coin_placeholder"
+        app:layout_constraintBottom_toTopOf="@+id/takePicture"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
