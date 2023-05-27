@@ -19,12 +19,9 @@ import java.io.IOException;
 import ru.rut.cnn.ml.Model;
 
 public class ImageAnalyzer implements ImageAnalysis.Analyzer {
-
     private Uri imageUri;
     private RecognitionListener listener;
     private Context context;
-
-
 
     public ImageAnalyzer(Context context, RecognitionListener listener, Uri uri) {
         this.listener = listener;
@@ -32,29 +29,19 @@ public class ImageAnalyzer implements ImageAnalysis.Analyzer {
         this.context = context;
     }
 
-
-
     @Override
     public void analyze(@NonNull ImageProxy image) {
-        Bitmap bitmap = null;
         try {
-            bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), imageUri);
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), imageUri);
+
+            if (bitmap == null) {
+                Log.e("ImageAnalyzer", "Error: Bitmap is null");
+                return;
+            }
+
+            listener.onResult(new BaseAnalyzer(context).analyze(bitmap));
         } catch (IOException e) {
-            Log.e("ImageAnalyzer", "error" + e.getMessage());
-        }
-
-
-        try {
-                if (bitmap == null) {
-                    Log.e("ImageAnalyzer", "Error: Bitmap is null");
-                    return;
-                }
-
-                listener.onResult(new BaseAnalyzer(context).analyze(bitmap));
-
-
-            } catch (Exception exception) {
-                exception.printStackTrace();
+            Log.e("ImageAnalyzer", "error", e);
         }
     }
 }

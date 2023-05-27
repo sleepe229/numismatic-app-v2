@@ -52,7 +52,6 @@ public class CameraActivity extends AppCompatActivity implements RecognitionList
             startActivity(intent);
         });
 
-
         openCamera();
     }
 
@@ -72,8 +71,7 @@ public class CameraActivity extends AppCompatActivity implements RecognitionList
     }
 
     private void bindCamera() {
-        Preview preview = new Preview.Builder()
-                .build();
+        Preview preview = new Preview.Builder().build();
 
         CameraSelector cameraSelector = new CameraSelector.Builder()
                 .requireLensFacing(CameraSelector.LENS_FACING_BACK)
@@ -85,7 +83,6 @@ public class CameraActivity extends AppCompatActivity implements RecognitionList
         cameraProviderFuture.addListener(() -> {
             try {
                 ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
-
                 preview.setSurfaceProvider(binding.cameraView.getSurfaceProvider());
 
                 cameraProvider.unbindAll();
@@ -94,7 +91,7 @@ public class CameraActivity extends AppCompatActivity implements RecognitionList
                 Log.e(TAG, "Error: " + e.getMessage());
             }
         },
-                ContextCompat.getMainExecutor(this));
+        ContextCompat.getMainExecutor(this));
     }
 
     private void takePicture() {

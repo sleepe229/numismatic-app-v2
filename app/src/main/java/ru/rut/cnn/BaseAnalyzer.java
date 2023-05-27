@@ -15,15 +15,15 @@ import java.io.IOException;
 import ru.rut.cnn.ml.Model;
 
 public class BaseAnalyzer {
-    private static final String[] CLASS_NAMES = new String[]{"1", "10","2", "5"};
+    private static final String[] CLASS_NAMES = new String[] {"1", "10", "2", "5"};
     private static final int IMAGE_WIDTH = 150;
     private static final int IMAGE_HEIGHT = 150;
     private final Model model;
 
-
     public BaseAnalyzer(@NonNull Context context) throws IOException {
         this.model = Model.newInstance(context);
     }
+
     public Category analyze(Bitmap bitmap) throws IllegalArgumentException{
         if (bitmap == null) {
             throw new IllegalArgumentException("Error: Bitmap is null");
@@ -49,7 +49,6 @@ public class BaseAnalyzer {
                 maxIndex = i;
             }
         }
-        Log.i("BaseAnalyzer", "result: " + maxIndex);
 
         return new Category(CLASS_NAMES[maxIndex], maxOutput);
     }

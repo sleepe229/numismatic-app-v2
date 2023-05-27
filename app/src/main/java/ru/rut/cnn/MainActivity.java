@@ -28,7 +28,6 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
     private ActivityMainBinding binding;
     private ActivityResultLauncher<PickVisualMediaRequest> pickVisualLauncher;
     private final String TAG = "MainActivity";
-    ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +58,6 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
                 } catch (IOException e) {
                     Log.e("MainActivity", e.getMessage(), e);
                 }
-
             } else {
                 Log.d("PhotoPicker", "No media selected");
             }
