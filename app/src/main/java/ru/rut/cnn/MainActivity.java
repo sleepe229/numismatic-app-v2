@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
 
                     binding.coinLabel.setText(output.label);
                     binding.coinImage.setImageDrawable(getDrawable(output.preview));
-                    binding.coinDescription.setText("Описание");
+                    binding.coinDescription.setText("Описание"); //Разобраться как выводить текст из файла
                 } catch (IOException e) {
                     Log.e("MainActivity", e.getMessage(), e);
                 }
