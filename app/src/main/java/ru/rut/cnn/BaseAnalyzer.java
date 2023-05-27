@@ -2,20 +2,17 @@ package ru.rut.cnn;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.support.image.TensorImage;
-import org.tensorflow.lite.support.label.Category;
 
 import java.io.IOException;
 
 import ru.rut.cnn.ml.Model;
 
 public class BaseAnalyzer {
-    private static final String[] CLASS_NAMES = new String[] {"1", "10", "2", "5"};
     private static final int IMAGE_WIDTH = 150;
     private static final int IMAGE_HEIGHT = 150;
     private final Model model;
@@ -24,7 +21,7 @@ public class BaseAnalyzer {
         this.model = Model.newInstance(context);
     }
 
-    public Category analyze(Bitmap bitmap) throws IllegalArgumentException{
+    public Coin analyze(Bitmap bitmap) throws IllegalArgumentException{
         if (bitmap == null) {
             throw new IllegalArgumentException("Error: Bitmap is null");
         }
@@ -50,6 +47,6 @@ public class BaseAnalyzer {
             }
         }
 
-        return new Category(CLASS_NAMES[maxIndex], maxOutput);
+        return new Coin(Coin.CLASS_NAMES[maxIndex], Coin.PREVIEWS[maxIndex]);
     }
 }

@@ -12,8 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:background="#FF0000"
-        android:orientation="horizontal"
         android:gravity="center_vertical"
+        android:orientation="horizontal"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         tools:ignore="MissingConstraints">
@@ -34,20 +34,50 @@
 
     </LinearLayout>
 
-
     <ImageView
         android:id="@+id/coin_image"
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:layout_below="@id/toolbar_layout"
         android:layout_centerHorizontal="true"
-
+        android:layout_marginTop="20dp"
         android:src="@drawable/coin_placeholder"
-        app:layout_constraintBottom_toTopOf="@+id/takePicture"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_layout"
         tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/coinLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="Label"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/coin_image" />
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="300dp"
+        android:layout_marginTop="15dp"
+        android:padding="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/coinLabel">
+
+        <TextView
+            android:id="@+id/coinDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Description"
+            android:textSize="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/coinLabel" />
+
+    </ScrollView>
 
     <Button
         android:id="@+id/takePicture"

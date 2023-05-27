@@ -1,8 +1,10 @@
 package ru.rut.cnn;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -24,10 +26,10 @@ import java.io.IOException;
 
 import ru.rut.cnn.databinding.ActivityMainBinding;
 
-public class MainActivity extends AppCompatActivity implements RecognitionListener{
+public class MainActivity extends AppCompatActivity implements RecognitionListener {
+    private final String TAG = "MainActivity";
     private ActivityMainBinding binding;
     private ActivityResultLauncher<PickVisualMediaRequest> pickVisualLauncher;
-    private final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,13 +50,18 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
         });
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     private void registerActivityForPickImage() {
         pickVisualLauncher = registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
             if (uri != null) {
                 Log.d("PhotoPicker", "Selected URI: " + uri);
                 try {
-                    Category output = new BaseAnalyzer(getApplicationContext()).analyze(BitmapFactory.decodeStream(getApplicationContext().getContentResolver().openInputStream(uri)));
-                    Log.i("MainActivity", output.getLabel());
+                    Coin output = new BaseAnalyzer(getApplicationContext()).analyze(BitmapFactory.decodeStream(getApplicationContext().getContentResolver().openInputStream(uri)));
+                    Log.i("MainActivity", output.label);
+
+                    binding.coinLabel.setText(output.label);
+                    binding.coinImage.setImageDrawable(getDrawable(output.preview));
+                    binding.coinDescription.setText("Описание");
                 } catch (IOException e) {
                     Log.e("MainActivity", e.getMessage(), e);
                 }
@@ -65,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
     }
 
     @Override
-    public void onResult(Category category) {
-        Log.w(TAG, category.getLabel());
+    public void onResult(Coin category) {
+        Log.w(TAG, category.label);
     }
 }

@@ -125,7 +125,7 @@ public class CameraActivity extends AppCompatActivity implements RecognitionList
     }
 
     @Override
-    public void onResult(Category category) {
-        Log.w(TAG, category.getLabel());
+    public void onResult(Coin category) {
+        Log.w(TAG, category.label);
     }
 }
