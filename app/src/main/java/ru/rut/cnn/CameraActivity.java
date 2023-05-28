@@ -2,33 +2,31 @@ package ru.rut.cnn;
 
 import static android.content.ContentValues.TAG;
 
+import android.Manifest;
+import android.content.ContentValues;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
+import android.widget.Toast;
+
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.camera.core.CameraSelector;
-import androidx.camera.core.ImageAnalysis;
 import androidx.camera.core.ImageCapture;
 import androidx.camera.core.ImageCaptureException;
 import androidx.camera.core.Preview;
 import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.core.content.ContextCompat;
 
-import android.Manifest;
-import android.content.ContentValues;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Bundle;
-import android.provider.MediaStore;
-import android.util.Log;
-import android.util.Size;
-import android.widget.Toast;
-
 import com.google.common.util.concurrent.ListenableFuture;
 
-import org.tensorflow.lite.support.label.Category;
-
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
@@ -36,6 +34,7 @@ import java.util.concurrent.ExecutionException;
 import ru.rut.cnn.databinding.ActivityCameraBinding;
 
 public class CameraActivity extends AppCompatActivity implements RecognitionListener {
+    public static Uri imageLocation;
     private ActivityCameraBinding binding;
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
     private ImageCapture imageCapture;
@@ -47,10 +46,6 @@ public class CameraActivity extends AppCompatActivity implements RecognitionList
         setContentView(binding.getRoot());
 
         binding.takePicture.setOnClickListener(v -> takePicture());
-        binding.backActivity.setOnClickListener(v -> {
-            Intent intent = new Intent(v.getContext(), MainActivity.class);
-            startActivity(intent);
-        });
 
         openCamera();
     }
@@ -110,9 +105,24 @@ public class CameraActivity extends AppCompatActivity implements RecognitionList
         imageCapture.takePicture(outputOptions, ContextCompat.getMainExecutor(this), new ImageCapture.OnImageSavedCallback() {
             @Override
             public void onImageSaved(@NonNull ImageCapture.OutputFileResults outputFileResults) {
-                String text = "Success! File location: " + outputFileResults.getSavedUri();
+                imageLocation = outputFileResults.getSavedUri();
+                String text = "Success! File location: " + imageLocation;
                 Toast.makeText(getBaseContext(), text, Toast.LENGTH_SHORT).show();
                 Log.d(TAG, text);
+                imageLoaderFromCamera();
+                Intent intent = new Intent(CameraActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+
+            public void imageLoaderFromCamera() {
+                    try {
+                        Coin output = new BaseAnalyzer(getApplicationContext()).analyze(BitmapFactory.decodeStream(getApplicationContext().getContentResolver().openInputStream(imageLocation)));
+                        Log.i("CameraActivity", output.label);
+
+                    } catch (IOException e) {
+                        Log.e("CameraActivity", e.getMessage(), e);
+                }
             }
 
             @Override
