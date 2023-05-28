@@ -10,13 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.camera.core.ImageAnalysis;
 import androidx.camera.core.ImageProxy;
 
-import org.tensorflow.lite.DataType;
-import org.tensorflow.lite.support.image.TensorImage;
-import org.tensorflow.lite.support.label.Category;
-
 import java.io.IOException;
-
-import ru.rut.cnn.ml.Model;
 
 public class ImageAnalyzer implements ImageAnalysis.Analyzer {
     private Uri imageUri;

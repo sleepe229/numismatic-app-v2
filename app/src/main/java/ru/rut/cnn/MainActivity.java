@@ -2,25 +2,14 @@ package ru.rut.cnn;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
-import android.util.Size;
-import android.widget.ImageView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.PickVisualMediaRequest;
-import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.activity .result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.camera.core.ImageAnalysis;
-import androidx.camera.core.ImageProxy;
-import androidx.core.content.ContextCompat;
-
-
-import org.tensorflow.lite.support.label.Category;
 
 import java.io.IOException;
 
@@ -30,6 +19,7 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
     private final String TAG = "MainActivity";
     private ActivityMainBinding binding;
     private ActivityResultLauncher<PickVisualMediaRequest> pickVisualLauncher;
+    private Coin output;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
             if (uri != null) {
                 Log.d("PhotoPicker", "Selected URI: " + uri);
                 try {
-                    Coin output = new BaseAnalyzer(getApplicationContext()).analyze(BitmapFactory.decodeStream(getApplicationContext().getContentResolver().openInputStream(uri)));
+                    output = new BaseAnalyzer(getApplicationContext()).analyze(BitmapFactory.decodeStream(getApplicationContext().getContentResolver().openInputStream(uri)));
                     Log.i("MainActivity", output.label);
 
                     binding.coinLabel.setText(output.label);
