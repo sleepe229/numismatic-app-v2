@@ -51,10 +51,12 @@
         android:id="@+id/coinLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:text="Label"
+        android:layout_marginTop="28dp"
+        android:text="Сделайте фотографию или загрузите готовую,
+        чтобы получить информацию о монете"
         android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/coin_image" />
 
@@ -71,7 +73,7 @@
             android:id="@+id/coinDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Description"
+            android:text=""
             android:textSize="15dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
